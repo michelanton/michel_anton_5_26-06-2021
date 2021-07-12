@@ -16,15 +16,16 @@ const loadConfig = async () => //assyn déclare la fonction assyncrone =  on peu
     })
     .then ((data) => teddiesData = data)         // récupere la res.json et l'envoi dans le tableau "teddiesData"
     
-    // console.log(teddiesData);     // vérification !!
+    // console.table(teddiesData);     // vérification !!
 };
 
 //------------------ FONCTION FLÉCHÉ D'AFFICHAGE DANS LE DOM --------------------------
 
 const articleDisplay = async () =>  // fonction d'affichage dans le DOM + déclaration de ASSYNC
 { 
-  
+
   await loadConfig();  // appelle la fonction de fetch et attend (await) quelle soit entirement executé
+
   document.querySelector(".produit").innerHTML = teddiesData.map ((teddies) => //array.MAP = crée un nouveau tableau avec les résultats de l'appel d'une fonction fournie sur CHAQUE élément du tableau appelant.
                                       // avec innerHTML : insertion dans le DOM du code HTML suivant:
   `

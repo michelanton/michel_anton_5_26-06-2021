@@ -112,10 +112,10 @@ function getArticle()    // fonction d'appel fetch du produit selectioné
                     "Pour consulter le panier : cliquez OK \n" +
                     "pour annuler et revenir a l'acceuil : cliquez ANNULER"))
                     {
-                    document.location = "../HTML/panier.html";     // redirection ver panier
+                    // document.location = "../HTML/panier.html";     // redirection ver panier
                 }else{
                     
-                    window.location.href = "../../../index.html";   // redirection acceuil
+                    // window.location.href = "../../../index.html";   // redirection acceuil
                 }
             }
 

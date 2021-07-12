@@ -1,0 +1,10 @@
+input {
+    outline : none;
+}
+input:invalid {
+    box-shadow: 0 0 5px crimson ;
+}
+input:valid {
+    
+    box-shadow: 0 0 5px darkgreen ;
+}
