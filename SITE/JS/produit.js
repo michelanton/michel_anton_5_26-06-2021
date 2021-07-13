@@ -21,7 +21,8 @@ function getArticle()    // fonction d'appel fetch du produit selectioné
     .catch((error) => {                //si erreur de connection au server
         
         productsContainer.innerHTML =   // affichage dans le DOM
-        `<p class="text_error text-center text-uppercase font-weight-bold text-danger ">la connection au server n'a pas été possible</p>`
+        `<p class="text_error text-center text-uppercase font-weight-bold text-danger ">
+        la connection au server n'a pas été possible</p>`
         
     })  
     .then((resultatAPI) => {     
@@ -125,7 +126,8 @@ function getArticle()    // fonction d'appel fetch du produit selectioné
             }
 
 
-            let produitPourLocalStorage = JSON.parse(localStorage.getItem("products"));   // stocker la récupération des valeurs du formulaire dans le local storage 
+            let produitPourLocalStorage = JSON.parse(localStorage.getItem("products"));   
+            // stocker la récupération des valeurs du formulaire dans le local storage 
             // console.log(produitPourLocalStorage);    // vérification !!
 
             //verfication qu'il n'y a pas DEJA des produit dans le LocalStorage

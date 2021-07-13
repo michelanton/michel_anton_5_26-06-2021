@@ -105,7 +105,6 @@ panierDisplay ();
     total ();
 // ------------------------FORMULAIRE ------------------------
  
-
  function leFormulaire (){
    
     document.querySelector(".cadre_formulaire").innerHTML =   //injection dans le DOM du formulaire
@@ -139,73 +138,43 @@ panierDisplay ();
          
         } 
         localStorage.setItem("contact",  JSON.stringify(contact));  // envoie au LocalStrage en format JSON "stringify"
-        // if (
-        //     contact.value == null 
-            
-        // ) {
-        //   alert("Veuillez renseigner tout les champs du formulaire !")
-        //     e.preventDefault();
-        // } else {
-        
-        //     localStorage.setItem("contact",  JSON.stringify(contact));  // envoie au LocalStrage en format JSON "stringify"
-        
-        // };
-   
-
 
     //--------------------envoi au server-----------------------
-    const aEnvoyer = 
+    console.log("contact");
+    console.log(contact);
+    console.log("produitPourLocalStorage");
+    console.log(produitPourLocalStorage);
+    const aEnvoyer = {
+        contact,
+        produitPourLocalStorage
+    }
+     
+    async function  postOrder (aEnvoyer) 
     {
-        produitPourLocalStorage,
-        contact
-    }; 
-    const optionPost = {
-        method: "POST",
-        headers: 
-        { 
-            'Accept': 'application/json', 
-            'Content-Type': 'application/json' 
-        },
-        body: JSON.stringify(contact)
-    };
-
-    fetch("http://localhost:3000/api/teddies/order" , optionPost)
-    .then(function(res){ 
-        console.log (res)
-        return res.json(); })
-    .then(function(data){ alert( data )  })
-    // .then ((res) => res.json())
-
-    // const aEnvoyer = 
-    // {
-    //     produitPourLocalStorage,
-    //     formulaireValues
-    // }; 
-//    postContactId = assync () =>
-//     {
-//         fetch("http://localhost:3000/api/teddies/order" , 
-    
-//         method: "POST",
-//         headers: 
-//         { 
-//             'Accept': 'application/json', 
-//             'Content-Type': 'application/json' 
-//         },
-//         body: JSON.stringify(aEnvoyer)
         
-//     )
-//     .then ((response) => response.json())
-//     .catch((err) => {
-//         alert("Il y a eu une erreur : " + err);
-//     }) 
-//     .then((data) => {
-//         // localStorage.clear();
-//         // document.location.href = "./confirmation.html";
-//     })
+        const optionPost = 
+        {
+            method: "POST",
+            headers: 
+            { 
+                'Accept': 'application/json', 
+                'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify((aEnvoyer))
+        };
+
+         fetch  ("http://localhost:3000/api/teddies/order" , optionPost)
+        .then(await function(res){ 
+            console.log (res)
+            return res.json(); })
+        .then(function(data){ 
+            localStorage.setItem("order_id", data) 
+        })
+    } 
+    postOrder(); 
+    // window.location.href = "./confirmation.html"
     
-//     .then(json => {
-//         orderConfirm.innerText = "Votre numéro de commande est le : " + JSON.stringify(json.orderId);
-//     });
+ 
 });
 };
 leFormulaire ();

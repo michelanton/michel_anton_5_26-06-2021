@@ -1,10 +1,11 @@
 //-----------------------FONCTION FLÉCHÉ DE RÉCUPÉRATION DE L'API-----------------
 
-let teddiesData = [];  // preparation d'un tableau vide pour recevoir les data articles
-const loadConfig = async () => //assyn déclare la fonction assyncrone =  on peut mettre un await!
+let teddiesData = [];  // preparation d'un tableau vide pour recevoir les données articles
+const loadConfig = async () => //"assyn" déclare la fonction assyncrone =  on peut mettre un await!
 {  
-  await fetch("http://localhost:3000/api/teddies")//await : attend la connection a l'URL
-    .then ((res) => res.json())                   // réciupération de la reponse et la transforme en JSON pour avoir un body
+  await fetch("http://localhost:3000/api/teddies")//"await" : attend la connection a l'URL
+    .then ((res) => res.json())  // réciupére la reponse et la transforme en JSON
+                     
     .catch((err) =>                                //si erreur de connection au server
     {                             
       document.querySelector(".produit").innerHTML = //insertion dans le DOM
@@ -25,18 +26,18 @@ const articleDisplay = async () =>  // fonction d'affichage dans le DOM + décla
 { 
   
   await loadConfig();  // appelle la fonction de fetch et attend (await) quelle soit entirement executé
-  document.querySelector(".produit").innerHTML = teddiesData.map ((teddies) => //array.MAP = crée un nouveau tableau avec les résultats de l'appel d'une fonction fournie sur CHAQUE élément du tableau appelant.
+  document.querySelector(".produit").innerHTML = teddiesData.map ((teddies) => //array.MAP = crée un nouveau tableau 
+                      //avec les résultats de l'appel d'une fonction fournie sur CHAQUE élément du tableau appelant.
                                       // avec innerHTML : insertion dans le DOM du code HTML suivant:
   `
-  
-  
         <div class="contener_art col-12 pt-4 col-sm-6  col-lg-3"> 
             <div class="cart-article card shadow p-3 bg-white rounded border border-warning">
                 <div class="card-header bg-warning ">
                     <h5 class="card-title d-flex justify-content-between">${teddies.name}<span>${teddies.price/100 + "€"}</span></h5>
                 </div>
                 <img src="${teddies.imageUrl}" class=" image  ">
-                <button type="button" class="button-choise" onclick="document.location.href ='SITE/HTML/produit.html?id=${teddies._id}'"><p class="align-middle">Choisis ta pelluche</p></button>
+                <button type="button" class="button-choise" onclick="document.location.href =
+                'SITE/HTML/produit.html?id=${teddies._id}'"><p class="align-middle">Choisis ta pelluche</p></button>
                 <div class="card-body">
                     <p class="card-text">${teddies.description}</p>
                 </div>
