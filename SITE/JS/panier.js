@@ -171,7 +171,7 @@ document.querySelector(".confirm_commande").addEventListener("click", (e) =>
     }  
     console.log(contact);
     console.log(products);
-    let orderID= []; 
+    // let orderID= []; 
 
     function  postOrder () 
     {   
@@ -193,18 +193,19 @@ document.querySelector(".confirm_commande").addEventListener("click", (e) =>
         })
         .then(function(data)
         { 
-            console.log(data);
-            orderID.push(data) ;
+            // orderID.push(data.orderId);
+           let orderid = data;
+           localStorage.setItem("orderServer", orderid.orderId );
           
-        })
-        // localStorage.setItem("order_id", JSON.stringify(orderID));
-   
+        }) 
         
     } 
-
    
-    // window.location.href = "./confirmation.html"
+    window.location.href = "./confirmation.html"
     postOrder ();
+    
+  
+    
 });
 
 
