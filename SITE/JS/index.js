@@ -1,4 +1,4 @@
-//-----------------------FONCTION FLÉCHÉ DE RÉCUPÉRATION DE L'API-----------------
+//-----------------------FONCTION DE RÉCUPÉRATION DE L'API-----------------
 
 let teddiesData = [];  // preparation d'un tableau vide pour recevoir les données articles
 const loadConfig = async () => //"assyn" déclare la fonction assyncrone =  on peut mettre un await!
