@@ -4,24 +4,25 @@ let produitPourLocalStorage = JSON.parse(localStorage.getItem("products")); // J
   
 //--------------------- AFFICHAGE ARTICLES PANIERS-------------------
 
-const panierContainer = document.querySelector(".article_panier");
-function panierDisplay ()
+const panierContainer = document.querySelector(".article_panier"); // selection de l'element du DOM ou sera affiche le panier
+function panierDisplay () // affichage du panier
 {
-    // verifier si panier vide ou pas...
+    // verifier si panier vide ou non...
     if (produitPourLocalStorage === null || produitPourLocalStorage == 0)// si panier vide :
     {
-        const panierVide = `
-        <div class="panier_vide">
-        <h3>Vous n'avez rien selectionné </h3>
-        </div>` 
-        panierContainer.innerHTML = panierVide;
-        document.querySelector(".text_contact").innerHTML = ` `;
-        document.querySelector(".btn_vider_panier").innerHTML = ` `; 
+        const panierVide = 
+            `
+                <div class="panier_vide">
+                <h3>Vous n'avez rien selectionné </h3>
+                </div>
+            ` 
+        panierContainer.innerHTML = panierVide; // affichage dans le DOM
+        document.querySelector(".text_contact").innerHTML = ` `;  // efface "votre adresse de livraison"
+        document.querySelector(".btn_vider_panier").innerHTML = ` `; // efface le bouton "vider panier"
     
-    }else 
-    {                             // si articles dans panier
-
-        for (let lesProduits of produitPourLocalStorage)
+    }else    // si articles dans panier
+    {                           
+        for (let lesProduits of produitPourLocalStorage) // FOR OF : indexe toutes les valeur du tableau
         {
             panierContainer.innerHTML+=   //insertion dans le DOM du code HTML pour chaque article du tableau "produitPourLocalStorage" grace au += :
                 `
@@ -56,19 +57,15 @@ function supArticle (){
     {
         btn_suprimer[l].addEventListener("click", (e) =>  //écoute du click pour chaques "bouton suprimer"
         { 
-            if (window.confirm("Cet article va être suprimé du panier !"))
+            if (window.confirm("Cet article va être suprimé du panier !")) // popup de verfication : OK / ANNULER
             {
-                produitPourLocalStorage.splice(l,1); // .splice( L= emplacement element du tableau --- 1= le nombre d'éleùment à suprimer)
+                produitPourLocalStorage.splice(l,1); // .splice( L= emplacement element du tableau --- 1= le nombre d'élement à suprimer)
                 localStorage.setItem("products", JSON.stringify(produitPourLocalStorage)); // envoie au local storage en JSON
-                window.location.href = "panier.html"; // recharger la page
-            }else{
-                
-            }
-
-        })
-        
+                window.location.href = "panier.html"; // recharger la page          
+            };
+        });       
     };
-}
+};
 supArticle ();
 //------------------------  VIDER PANIER ------------------------------------
 function viderPanier ()
@@ -78,38 +75,34 @@ function viderPanier ()
     btnViderPanier.addEventListener("click", (e) => // ecoute du bouton
     {  
         if (window.confirm("Confirmer pour vider le panier va être vider !"))
-                {
-                    produitPourLocalStorage = localStorage.removeItem("products")
-                    contact = localStorage.removeItem("contact")      // création d'un nouveau tableau des produit selectioné VIDE qui efface tout
-                    // localStorage.setItem("products", JSON.stringify(produitPourLocalStorage));// envoie au local storage en JSON du tableau vide
-                    window.location.href = "panier.html";                            // recharger la page
-
-                }           
+            {
+                localStorage.clear();   // vide le localStorage
+                window.location.href = "panier.html";    // recharger la page panier
+            }           
     });
 };
 viderPanier ();
 // -------------------------PRIX TOTAL DU PANIER -----------------------
-    let prixTotalPanier = [];
+    let prixTotalPanier = [];  // création d'un tableau vide pour recevoir la valeur totale du panier
     function total ()
     {
-        for (let m =0 ; m< produitPourLocalStorage.length; m++)
+        for (let m =0 ; m< produitPourLocalStorage.length; m++) // indexe les valeurs des produits
         {
-            let prixTotal = produitPourLocalStorage[m].price_total; // recupération de tout les prix dans le localStorage
+            let prixTotal = produitPourLocalStorage[m].price_total; // recupération de tout les prix
             prixTotalPanier.push(prixTotal);   // envoie de chaque prix "prixTotal" dans le tableau vide  "prixTotalPanier"
         }
         let total = prixTotalPanier.reduce((a,b)=> a+b,0);  // avec la méthode "REDUCE", on additione toutes les valeurs du tableau "prixTotalPanier"
-
         document.querySelector(".total_panier").innerHTML = `Prix total de votre panier : `+ total +"€"; // envoie dans le DOM du résultat "total"
        
     };
-    
     total ();
-// ------------------------FORMULAIRE ------------------------
- 
+    localStorage.setItem("totalPanier", prixTotalPanier);// envois au localStorage du prix total
+    // console.log(prixTotalPanier); //vérification !!
+
+// ------------------------AFFICHAGE DANS LE DOM DU FORMULAIRE ------------------------
 function leFormulaire ()
-{
-   
-    document.querySelector(".cadre_formulaire").innerHTML =   //injection dans le DOM du formulaire
+{ 
+    document.querySelector(".cadre_formulaire").innerHTML =   
     `
         <form>
             <label for="Fname">prénom:</label><br>
@@ -127,9 +120,8 @@ function leFormulaire ()
         </form>
     `;
 };
-    // const btnSubmit = document.querySelector(".confirm_commande");
-leFormulaire ();
-
+leFormulaire();
+// --------------- BOUTON DE CONFIRMATION -----------------
 document.querySelector(".confirm_commande").addEventListener("click", (e) => 
 { 
     const contact = // création d'un Objet "contact" contenant les input du formulaire
@@ -138,40 +130,34 @@ document.querySelector(".confirm_commande").addEventListener("click", (e) =>
         lastName : document.querySelector("#Sname").value,
         address : document.querySelector("#adress").value,
         city : document.querySelector("#city").value,
-        email : document.querySelector("#email").value
-        
+        email : document.querySelector("#email").value        
     } 
-    
-    
+    e.preventDefault();
     localStorage.setItem("contact",  JSON.stringify(contact));  // envoie au LocalStrage en format JSON "stringify"
-    // console.log("contact");
-    // // console.log(contact);
-    // console.log("produitPourLocalStorage");
+    // console.log(contact);  
     // console.log(produitPourLocalStorage);
-    //--------------------envoi au server-----------------------
-    const products = [];
-    
+
+    // --------------------ENVOIE AU SERVEUR-----------------------
+    const products = []; // création d'un tableau vide pour recevoir les  
     function tabAEnvoyer () 
     {
-        
-    }for (let n =0 ; n< produitPourLocalStorage.length; n++)
-    {
-        let idProd = produitPourLocalStorage[n]._id; 
-        products.push(idProd);   // envoie de chaque prix "prixTotal" dans le tableau vide  "prixTotalPanier"
-    
-    }
+        for (let n =0 ; n< produitPourLocalStorage.length; n++)
+        {
+            let idProd = produitPourLocalStorage[n]._id; 
+            products.push(idProd);   // envoie de chaque prix "prixTotal" dans le tableau vide  "prixTotalPanier"   
+        };
+    };
     tabAEnvoyer();
     
-    // console.log(produicts);
-    e.preventDefault();
+    // console.log(products);
+    // e.preventDefault();
     const aEnvoyer = {
         contact,
         products
         
-    }  
-    console.log(contact);
-    console.log(products);
-    // let orderID= []; 
+    };
+    // console.log(contact);
+    // console.log(products);
 
     function  postOrder () 
     {   
@@ -188,7 +174,6 @@ document.querySelector(".confirm_commande").addEventListener("click", (e) =>
         fetch  ("http://localhost:3000/api/teddies/order" , optionPost)
         .then (function  (res) 
         {
-            console.log(res);
                 return res.json();
         })
         .then(function(data)
@@ -197,16 +182,15 @@ document.querySelector(".confirm_commande").addEventListener("click", (e) =>
            let orderid = data;
            localStorage.setItem("orderServer", orderid.orderId );
           
-        }) 
+        }); 
         
-    } 
+    }; 
    
     window.location.href = "./confirmation.html"
     postOrder ();
-    
-  
-    
+   
 });
+
 
 
 
