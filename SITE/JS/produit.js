@@ -93,12 +93,12 @@ function getArticle()    // fonction d'appel fetch du produit selectioné
             // RÉCUPÉRATION DES VALEURS POUR LE PANIER
         
             let productOptionPourPanier = {  // récupere les variable lorsqu'on clique sur le bouton panier : "#button_envoyer_panier"
-                products_name :article.name,
-                products_price_total : article.price / 100 * Quantity.value,
-                products_price_unit : article.price / 100,
-                products_quantity : Quantity.value,
-                products_color : colorSelect.value,
-                products_Id : article._id
+                name :article.name,
+                price_total : article.price / 100 * Quantity.value,
+                price_unit : article.price / 100,
+                quantity : Quantity.value,
+                color : colorSelect.value,
+                _id : article._id
                 };
                 // console.log(productOptionPourPanier); // vérifie ce qu'il y a dans le panier
 
