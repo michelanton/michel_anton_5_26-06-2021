@@ -7,7 +7,7 @@ let produitPourLocalStorage = JSON.parse(localStorage.getItem("products")); // J
 const panierContainer = document.querySelector(".article_panier"); // selection de l'element du DOM ou sera affiche le panier
 function panierDisplay () // affichage du panier
 {
-    // verifier si panier vide ou non...
+    // --------verifier si panier vide ou non...  ------------
     if (produitPourLocalStorage === null || produitPourLocalStorage == 0)// si panier vide :
     {
         const panierVide = 
@@ -48,7 +48,7 @@ function panierDisplay () // affichage du panier
     }
 };
 panierDisplay ();
-// 
+
 //---------------------------SUPRIMER UN ARTICLE---------------------------
 function supArticle (){
         let btn_suprimer = document.querySelectorAll(".btn_suprimer"); // variable qui recupere TOUT les "boutons suprimer"
@@ -91,20 +91,24 @@ viderPanier ();
             let prixTotal = produitPourLocalStorage[m].price_total; // recupération de tout les prix
             prixTotalPanier.push(prixTotal);   // envoie de chaque prix "prixTotal" dans le tableau vide  "prixTotalPanier"
         }
-        let total = prixTotalPanier.reduce((a,b)=> a+b,0);  // avec la méthode "REDUCE", on additione toutes les valeurs du tableau "prixTotalPanier"
-        document.querySelector(".total_panier").innerHTML = `Prix total de votre panier : `+ total +"€"; // envoie dans le DOM du résultat "total"
-       
+          
+        
+                                                                 // envoie dans le DOM du résultat "total"       
     };
     total ();
-    localStorage.setItem("totalPanier", prixTotalPanier);// envois au localStorage du prix total
-    // console.log(prixTotalPanier); //vérification !!
+    let totale = prixTotalPanier.reduce((a,b)=> a+b,0);
+    // avec la méthode "REDUCE", on additione toutes les valeurs du tableau "prixTotalPanier"
+    document.querySelector(".total_panier").innerHTML = 'prix total du panier' + totale + `€`;
+                                                    // envoie dans le DOM du résultat "total"
+    localStorage.setItem("totalPanier", totale);// envois au localStorage du prix total
+    console.log(prixTotalPanier); //vérification !!
 
 // ------------------------AFFICHAGE DANS LE DOM DU FORMULAIRE ------------------------
 function leFormulaire ()
 { 
     document.querySelector(".cadre_formulaire").innerHTML =   
     `
-        <form>
+        <form class="form1>
             <label for="Fname">prénom:</label><br>
             <input type="text" pattern=".*[A-Za-z]{3,20}$" id="Fname" name="Fname"  placeholder="required" required/><br>
             <label for="Sname">Nom:</label><br>
@@ -116,80 +120,94 @@ function leFormulaire ()
             <label for="email" type="email">Adresse mail:</label><br>
             <input type="email" id="email" name="email"  placeholder="required" required/><br>
             <br>
-            <input type="submit" class="confirm_commande" />
+           <input type="button" value="Evoyer" onclick="envoiAuClick()" class="confirm_commande" />
         </form>
     `;
 };
+
 leFormulaire();
-// --------------- BOUTON DE CONFIRMATION -----------------
-document.querySelector(".confirm_commande").addEventListener("click", (e) => 
-{ 
-    const contact = // création d'un Objet "contact" contenant les input du formulaire
-    {
-        firstName : document.querySelector("#Fname").value,
-        lastName : document.querySelector("#Sname").value,
-        address : document.querySelector("#adress").value,
-        city : document.querySelector("#city").value,
-        email : document.querySelector("#email").value        
-    } 
-    e.preventDefault();
-    localStorage.setItem("contact",  JSON.stringify(contact));  // envoie au LocalStrage en format JSON "stringify"
-    // console.log(contact);  
-    // console.log(produitPourLocalStorage);
 
-    // --------------------ENVOIE AU SERVEUR-----------------------
-    const products = []; // création d'un tableau vide pour recevoir les  
-    function tabAEnvoyer () 
+let inputfirstName = document.querySelector("#Fname");
+let inputlastName = document.querySelector("#Sname");
+let inputaddress = document.querySelector("#adress");
+let inputcity = document.querySelector("#city");
+let inputemail = document.querySelector("#email");
+
+function envoiAuClick() 
+{
+    const inpObj = inputfirstName&&
+    inputlastName&&
+    inputaddress&&
+    inputcity&&
+    inputemail;
+    if (!inpObj.checkValidity()) 
     {
-        for (let n =0 ; n< produitPourLocalStorage.length; n++)
+      alert("Vous devez remplir les champs requis");
+    } else 
+    {
+        const contact = // création d'un Objet "contact" contenant les input du formulaire
         {
-            let idProd = produitPourLocalStorage[n]._id; 
-            products.push(idProd);   // envoie de chaque prix "prixTotal" dans le tableau vide  "prixTotalPanier"   
+            firstName : inputfirstName.value,
+            lastName : inputlastName.value,
+            address : inputaddress.value,
+            city : inputcity.value,
+            email : inputemail.value        
         };
-    };
-    tabAEnvoyer();
+        localStorage.setItem("contact",  JSON.stringify(contact));  // envoie au LocalStrage en format JSON "stringify"
+        console.log(contact);  
+        // console.log(produitPourLocalStorage);
     
-    // console.log(products);
-    // e.preventDefault();
-    const aEnvoyer = {
-        contact,
-        products
-        
-    };
-    // console.log(contact);
-    // console.log(products);
 
-    function  postOrder () 
-    {   
-        const optionPost = 
+        // // --------------------ENVOIE AU SERVEUR-----------------------
+        const products = []; // création d'un tableau vide pour recevoir les _id des produits
+        function tabAEnvoyer () 
         {
-            method: "POST",
-            headers: 
-            { 
-                'Accept': 'application/json', 
-                'Content-Type': 'application/json' 
-            },
-            body: JSON.stringify((aEnvoyer))
+            for (let n =0 ; n< produitPourLocalStorage.length; n++)
+            {
+                let idProd = produitPourLocalStorage[n]._id; 
+                products.push(idProd);   // envoie de chaque _id dans le tableau "products"   
+            };
         };
-        fetch  ("http://localhost:3000/api/teddies/order" , optionPost)
-        .then (function  (res) 
-        {
-                return res.json();
-        })
-        .then(function(data)
-        { 
-            // orderID.push(data.orderId);
-           let orderid = data;
-           localStorage.setItem("orderServer", orderid.orderId );
-          
-        }); 
+        tabAEnvoyer();
         
+        const aEnvoyer = {
+            contact,
+            products        
+        };
+        console.log(contact);   // vérification !!
+        console.log(products);  // vérification !!
+        function  postOrder () 
+        {   
+            const optionPost = 
+            {
+                method: "POST",
+                headers: 
+                { 
+                    'Accept': 'application/json', 
+                    'Content-Type': 'application/json' 
+                },
+                body: JSON.stringify((aEnvoyer))
+            };
+            fetch  ("http://localhost:3000/api/teddies/order" , optionPost)
+            .then (function  (res) 
+            {
+                    return res.json();
+            })
+            .then(function(data)
+            { 
+                // orderID.push(data.orderId);
+            let orderid = data;
+            localStorage.setItem("orderServer", orderid.orderId );
+            
+            });      
+        }; 
+        postOrder (); 
+        window.location.href = "./confirmation.html" 
     }; 
-   
-    window.location.href = "./confirmation.html"
-    postOrder ();
-   
-});
+};
+
+
+
 
 
 

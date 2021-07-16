@@ -4,6 +4,7 @@
   
   document.querySelector(".display-orderid").innerHTML = Order;
   document.querySelector(".display-price").innerHTML = `${montantTotal}€`;
+  document.querySelector(".nav_panier").innerHTML= " ";
 
   localStorage.clear();
 

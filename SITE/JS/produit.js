@@ -2,12 +2,14 @@
 const recupererChaineDeRequetteUrlId = window.location.search; // à la consolle ?ID du produit
 // console.log(recupererChaineDeRequetteUrlId); // vérification  !! 
 
-const urlSearchParams = new URLSearchParams(recupererChaineDeRequetteUrlId); // pour récuperer SEULEMENT l' ID du produit sans le ?  utiliser URLSearchParams
+const urlSearchParams = new URLSearchParams(recupererChaineDeRequetteUrlId); 
+// pour récuperer SEULEMENT l' ID du produit sans le ?  utiliser URLSearchParams
 const IdProduit = urlSearchParams.get("id");// recuperation de l'ID réel du produit
 // console.log(IdProduit);   // vérification  !! 
 const UrlApi = "http://localhost:3000/api/teddies/"; // mise en variable de l'URL 
 const urlProduit = IdProduit;                       // mise en variable de l'ID produit
 let productsContainer = document.querySelector(".contener1"); // mise en variable de l'element DOM ".contener1"
+
 function getArticle()    // fonction pour fetch du produit selectioné 
 {             
     fetch(UrlApi + urlProduit) // appel connection server
@@ -15,19 +17,20 @@ function getArticle()    // fonction pour fetch du produit selectioné
     {
         return response.json();  // récupére la reponse et la transforme en JSON
     })
-    .catch((error) => {                //si erreur de connection au server
-        
+    .catch((error) =>            //si erreur de connection au server       
+    {                
         productsContainer.innerHTML =   // affichage dans le DOM message erreur
         `
             <p class="text_error text-center text-uppercase font-weight-bold text-danger ">
             la connection au server n'a pas été possible</p>
         ` 
     })  
-    .then((resultatAPI) => {     
+    .then((resultatAPI) => 
+    {     
         let article = resultatAPI;      // mise en variable du résultat 
         // console.log(article);     // vérification !!
-
-        for (const property in article) {      //pour placer les données reçues via l'API aux bons endroits sur la page
+        for (const property in article) //pour placer les données reçues via l'API aux bons endroits sur la page
+        {      
             // console.log(`${property}: ${article[property]}`);   // vérification !!
 
             productsContainer.innerHTML =  
@@ -60,32 +63,32 @@ function getArticle()    // fonction pour fetch du produit selectioné
             `;           
         };
 
-        //SELECTION DE LA COULEUR
+        //--------------SELECTION DE LA COULEUR------------------
         // inserer les options dans le "select"
         let colorOfArticle = article.colors; // tableau contenant les couleurs  
-        let colorSelect = document.getElementById("color_select");//variable qui renverra dans ID=color-select
-        
+        let colorSelect = document.querySelector("#color_select");//variable qui renverra dans ID=color-select       
         // console.log(colorOfArticle);    // vérification !!
         // console.log(colorSelect);       // vérification !!
-        // SELECTION DE LA QUANTITE
+
+        // --------------SELECTION DE LA QUANTITE-----------------
         let Quantity = document.querySelector("#articleQuantity");  // input , type = number
                 
         function optionColorSelect () // permet d'afficher les option de couleur dans le "color_select"
         {
-            for (let i = 0; i<colorOfArticle.length; i++) {
+            for (let i = 0; i<colorOfArticle.length; i++) 
+            {
                 let option = document.createElement('option'); //option créra pour chaque I un tag option
                 option.innerText = colorOfArticle[i]; // insere le texte (article.colors) dans chaque "option"
-                colorSelect.appendChild(option);//déplace l'option vers position tête de colorSelect
-                
-            }   // console.log(colorSelect);      // vérification !!
-            };
+                colorSelect.appendChild(option);//déplace l'option vers position tête de colorSelect                
+            };  
+        };
             optionColorSelect();
 
-            //  BOUTON PANIER
+            // ----------------- BOUTON PANIER-------------------
             const envoyerPanier = document.querySelector("#button_envoyer_panier"); // selectiondu bouton panier
             envoyerPanier.addEventListener("click", (e)=>{  // ecouter le click (event) sur bouton panier et crée un evenement
 
-            // RÉCUPÉRATION DES VALEURS POUR LE PANIER        
+            // -RÉCUPÉRATION DES VALEURS POUR LE PANIER -       
             let productOptionPourPanier = {  // récupere les variable lorsqu'on clique sur le bouton panier : "#button_envoyer_panier"
                 name :article.name,
                 price_total : article.price / 100 * Quantity.value,
@@ -97,24 +100,27 @@ function getArticle()    // fonction pour fetch du produit selectioné
                 // console.log(productOptionPourPanier); // vérifie ce qu'il y a dans le panier
        
             //----------------------------GESTION DU LOCAL STORAGE ---------------------------------
-            // CONFIRMATION DU PANNIER
+            // -CONFIRMATION DU PANNIER-
             const popupConfirmationPanier = () =>      // ce que doit faire et afficher la fenetre alert
             {
-                if (window.confirm("vous avez rajouté :" + Quantity.value + " " + article.name + " " + colorSelect.value + " " + "à votre panier " + "pour un montant total de: " + article.price / 100 * Quantity.value +"€ \n" + 
+                if (window.confirm("vous avez rajouté :" + Quantity.value + " " + article.name + " " 
+                    + colorSelect.value + " " + "à votre panier " + "pour un montant total de: " 
+                    + article.price / 100 * Quantity.value +"€ \n" + 
                     "Pour consulter le panier : cliquez OK \n" +
                     "pour annuler et revenir a l'acceuil : cliquez ANNULER"))
-                    {
+                {
                     document.location = "../HTML/panier.html";     // redirection ver panier
-                }else{
-                    
+                }else
+                {                         
                     window.location.href = "../../../index.html";   // redirection acceuil
-                }
-            }
+                };
+            };
 
-            const ajoutProduitLocalStorage = () =>{      // fonction pour ajouter un produit au LOCAL STORAGE
+            const ajoutProduitLocalStorage = () =>  // fonction pour ajouter un produit au LOCAL STORAGE
+            {      
                 produitPourLocalStorage.push(productOptionPourPanier);// rajout au taleau de local storage
                 localStorage.setItem("products", JSON.stringify(produitPourLocalStorage));
-            }
+            };
 
             let produitPourLocalStorage = JSON.parse(localStorage.getItem("products")); // stocke la récupération des valeurs du formulaire dans le local storage 
             // console.log(produitPourLocalStorage);    // vérification !!
@@ -131,8 +137,8 @@ function getArticle()    // fonction pour fetch du produit selectioné
                 ajoutProduitLocalStorage();
                 // console.log(produitPourLocalStorage);    // vérification !!
                 popupConfirmationPanier();
-            }
-        })    
+            };
+        });   
     });       
-}
+};
 getArticle();
