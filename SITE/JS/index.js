@@ -5,7 +5,7 @@ const loadConfig = async () =>
   //"assyn" déclare la fonction assyncrone =  on peut mettre un await!
   {
     await fetch("http://localhost:3000/api/teddies") //"await" : attend la connection a l'URL
-      .then((res) => res.json()) // récupére la reponse et la transforme en JSON
+      .then((res) => res.json()) //  transforme JSON en JS
 
       .catch(
         (

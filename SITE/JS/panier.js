@@ -119,13 +119,13 @@ function leFormulaire() {
   document.querySelector(".cadre_formulaire").innerHTML = `
         <form class="form1>
             <label for="Fname">prénom:</label><br>
-            <input type="text" pattern=".*[A-Za-z]{3,20}$" id="Fname" name="Fname"  placeholder="required" required/><br>
+            <input type="text" pattern="[A-Za-z\ \'\-]{3,}" id="Fname" name="Fname"  placeholder="required" required/><br>
             <label for="Sname">Nom:</label><br>
-            <input type="text" pattern="[A-Za-z]{3,20}" id="Sname" name="Sname"  placeholder="required" required/><br>
+            <input type="text" pattern="[A-Za-z\ \'\-]{3,}" id="Sname" name="Sname"  placeholder="required" required/><br>
             <label for="adress">Adresse:</label><br>
-            <input type="text" pattern="[A-Za-z0-9][" "]{5,30}" id="adress" name="adress" required placeholder="required" required/><br>
+            <input type="text" pattern="[A-Za-z0-9\ \'\-]{2,}" id="adress" name="adress" required placeholder="required" required/><br>
             <label for="city">ville:</label><br>
-            <input type="text" pattern="[A-Za-z]{3,20}" id="city" name="city"  placeholder="required" required/><br>
+            <input type="text" pattern="[A-Za-z\ \'\-]{3,}" id="city" name="city"  placeholder="required" required/><br>
             <label for="email" type="email">Adresse mail:</label><br>
             <input type="email" id="email" name="email"  placeholder="required" required/><br>
             <br>
@@ -144,15 +144,12 @@ let inputemail = document.querySelector("#email");
 
 document.addEventListener("input", function (e) {
   if (
-    /^[A-Za-z'-]{5,}$/.test(inputfirstName.value) &&
-    /^[A-Za-z'-]{5,}$/.test(inputlastName.value) &&
-    /^[A-Za-z'-]{5,}$/.test(inputcity.value)
+    /^[A-Za-z\'\-]{3,}$/.test(inputfirstName.value) &&
+    /^[A-Za-z\'\-]{3,}$/.test(inputlastName.value) &&
+    /^[A-Za-z0-9\ \'\-]{2,}$/.test(inputaddress.value)&&
+    /^[A-Za-z\'\-]{3,}$/.test(inputcity.value)
   ) {
-    console.log("OK");
     document.querySelector(".confirm_commande").removeAttribute("disabled");
-    // console.log(inputfirstName.value);
-    // console.log(inputlastName.value);
-    // console.log(inputcity.value);
   }
 });
 
