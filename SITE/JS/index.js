@@ -20,7 +20,7 @@ async function loadConfig ()
         }
       )
       .then((data) => (teddiesData = data)); //envoi dans le tableau "teddiesData"
-    // console.log(teddiesData);     // vérification !!
+    // console.table(teddiesData);     // vérification !!
   };
 
 //------------------ FONCTION D'AFFICHAGE DANS LE DOM --------------------------

@@ -46,22 +46,13 @@ function panierDisplay() {
 }
 panierDisplay();
 
-//---------------------------SUPRIMER UN ARTICLE---------------------------
+//---------------------------SUPRIMER UN ARTICLE---------------------------       //écoute du click pour chaques "bouton suprimer"
 function supArticle() {
   let btn_suprimer = document.querySelectorAll(".btn_suprimer"); // variable qui recupere TOUT les "boutons suprimer"
 
-  for (
-    let l = 0;
-    l < btn_suprimer.length;
-    l++ // boucle pour incrementer les "boutons suprimés"
-  ) {
-    btn_suprimer[l].addEventListener(
-      "click",
-      (
-        e //écoute du click pour chaques "bouton suprimer"
-      ) => {
-        if (window.confirm("Cet article va être suprimé du panier !")) {
-          // popup de verfication : OK / ANNULER
+  for (let l = 0; l < btn_suprimer.length; l++ ) {        // boucle pour incrementer les "boutons suprimés"
+    btn_suprimer[l].addEventListener("click", (e ) => {   //écoute du click pour chaques "bouton suprimer"
+        if (window.confirm("Cet article va être suprimé du panier !")) {   // popup de verfication : OK / ANNULER
           produitPourLocalStorage.splice(l, 1); // .splice( L= emplacement element du tableau --- 1= le nombre d'élement à suprimer)
           localStorage.setItem(
             "products",
@@ -69,20 +60,16 @@ function supArticle() {
           ); // envoie au local storage en JSON
           window.location.href = "panier.html"; // recharger la page
         }
-      }
-    );
+    });
+    
   }
 }
 supArticle();
-//------------------------  VIDER PANIER ------------------------------------
+//------------------------  VIDER PANIER -----------------------------------
 function viderPanier() {
   const btnViderPanier = document.querySelector(".btn_vider_panier"); //const qui recupere le bouton "vider le panier"
 
-  btnViderPanier.addEventListener(
-    "click",
-    (
-      e // ecoute du bouton
-    ) => {
+  btnViderPanier.addEventListener("click", (e) => {             // ecoute du bouton
       if (window.confirm("Confirmer pour vider le panier va être vider !")) {
         localStorage.clear(); // vide le localStorage
         window.location.href = "panier.html"; // recharger la page panier
@@ -91,20 +78,14 @@ function viderPanier() {
   );
 }
 viderPanier();
-// -------------------------PRIX TOTAL DU PANIER -----------------------
+// -------------------------PRIX TOTAL DU PANIER ----------------------- 
 let prixTotalPanier = []; // création d'un tableau vide pour recevoir la valeur totale du panier
 function total() {
-  for (
-    let m = 0;
-    m < produitPourLocalStorage.length;
-    m++ // indexe les valeurs des produits
-  ) {
-    let prixTotal = produitPourLocalStorage[m].price_total; // recupération de tout les prix
-    prixTotalPanier.push(prixTotal); // envoie de chaque prix "prixTotal" dans le tableau vide  "prixTotalPanier"
+  for (let m = 0; m < produitPourLocalStorage.length; m++ ) {     // indexe les valeurs des produits
+    let prixTotal = produitPourLocalStorage[m].price_total;     // recupération de tout les prix
+    prixTotalPanier.push(prixTotal);      // envoie de chaque prix "prixTotal" dans le tableau vide  "prixTotalPanier"
   }
-
-  // envoie dans le DOM du résultat "total"
-}
+};
 total();
 let totale = prixTotalPanier.reduce((a, b) => a + b, 0);
 // avec la méthode "REDUCE", on additione toutes les valeurs du tableau "prixTotalPanier"
@@ -112,7 +93,7 @@ document.querySelector(".total_panier").innerHTML =
   "prix total du panier" + totale + `€`;
 // envoie dans le DOM du résultat "total"
 localStorage.setItem("totalPanier", totale); // envois au localStorage du prix total
-console.log(prixTotalPanier); //vérification !!
+// console.log(prixTotalPanier);    //vérification !!
 
 // ------------------------AFFICHAGE DANS LE DOM DU FORMULAIRE ------------------------
 function leFormulaire() {
@@ -141,6 +122,12 @@ let inputlastName = document.querySelector("#Sname");
 let inputaddress = document.querySelector("#adress");
 let inputcity = document.querySelector("#city");
 let inputemail = document.querySelector("#email");
+
+// console.log(inputfirstName); 
+// console.log(inputlastName); 
+// console.log(inputaddress); 
+// console.log(inputcity); 
+// console.log(inputemail); 
 
 document.addEventListener("input", function (e) {
   if (

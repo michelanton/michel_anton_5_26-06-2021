@@ -1,7 +1,9 @@
 const recupererChaineDeRequetteUrlId = window.location.search; // récupération de: ?ID
+// console.log(recupererChaineDeRequetteUrlId);    // vérification !!
 const urlSearchParams = new URLSearchParams(recupererChaineDeRequetteUrlId);
 // pour récuperer SEULEMENT l' ID du produit sans le ? = URLSearchParams
 const IdProduit = urlSearchParams.get("id"); // recuperation de l'ID en string
+// console.log(IdProduit);    // vérification !!
 const UrlApi = "http://localhost:3000/api/teddies/";
 const urlProduit = IdProduit;
 let productsContainer = document.querySelector(".contener1");
@@ -23,7 +25,7 @@ function getArticle() {
     )
     .then((resultatAPI) => {
       let article = resultatAPI;
-      console.log(article);     // vérification !!
+      // console.log(article);     // vérification !!
       for (const property in article) { //ittere les prorpietés
         // console.log(`${property}: ${article[property]}`);   // vérification !!
         productsContainer.innerHTML = 
@@ -105,28 +107,21 @@ function getArticle() {
         // AJOUTER UN PRODUIT au LOCAL STORAGE
         const ajoutProduitLocalStorage = () => {
           produitPourLocalStorage.push(productOptionPourPanier); // rajout au taleau pour localStorage
-          localStorage.setItem(
-            "products",
-            JSON.stringify(produitPourLocalStorage)
-          ); // envoie au localStorage JSON
+          localStorage.setItem("products",JSON.stringify(produitPourLocalStorage)); // envoie au localStorage JSON
         };
 
-        let produitPourLocalStorage = JSON.parse(
-          localStorage.getItem("products")
-        ); // stocke les valeurs du formulaire JS
+        let produitPourLocalStorage = JSON.parse(localStorage.getItem("products")); // stocke les valeurs du formulaire JS
         // console.log(produitPourLocalStorage);    // vérification !!
 
         //verfication qu'il n'y a pas DEJA des produit dans le LocalStorage
         if (produitPourLocalStorage) {
           //si il y a deja des produit
           ajoutProduitLocalStorage();
-          // console.log(produitPourLocalStorage);   // vérification !!
           popupConfirmationPanier();
         } // s'il y n'y a pas de produit dans le local Storage
         else {
           produitPourLocalStorage = []; //création du tableau initial
           ajoutProduitLocalStorage();
-          // console.log(produitPourLocalStorage);    // vérification !!
           popupConfirmationPanier();
         }
       });
