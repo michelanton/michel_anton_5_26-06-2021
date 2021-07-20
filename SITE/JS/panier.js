@@ -127,7 +127,7 @@ function leFormulaire() {
             <label for="city">ville:</label><br>
             <input type="text" pattern="[A-Za-z\ \'\-]{3,}" id="city" name="city"  placeholder="required" required/><br>
             <label for="email" type="email">Adresse mail:</label><br>
-            <input type="email" id="email" name="email"  placeholder="required" required/><br>
+            <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,9}" id="email" name="email"  placeholder="required" required/><br>
             <br>
            <input type="button" value="Envoyer" disabled onclick="envoiAuClick()" class="confirm_commande" />
         </form>
@@ -147,11 +147,10 @@ document.addEventListener("input", function (e) {
     /^[A-Za-z\'\-]{3,}$/.test(inputfirstName.value) &&
     /^[A-Za-z\'\-]{3,}$/.test(inputlastName.value) &&
     /^[A-Za-z0-9\ \'\-]{2,}$/.test(inputaddress.value)&&
-    /^[A-Za-z\'\-]{3,}$/.test(inputcity.value)
-  ) {
+    /^[A-Za-z\'\-]{3,}$/.test(inputcity.value)&&
+    /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,9}$/.test(inputemail.value))
     document.querySelector(".confirm_commande").removeAttribute("disabled");
-  }
-});
+  });
 
 function envoiAuClick() {
   const contact =
@@ -164,8 +163,7 @@ function envoiAuClick() {
       email: inputemail.value,
     };
   localStorage.setItem("contact", JSON.stringify(contact)); // envoie au LocalStrage en format JSON "stringify"
-  console.log(contact);
-  // console.log(produitPourLocalStorage);
+  // console.log(contact);    //vérification !!
 
   // // --------------------ENVOIE AU SERVEUR-----------------------
   const products = []; // création d'un tableau vide pour recevoir les _id des produits
@@ -181,8 +179,8 @@ function envoiAuClick() {
     contact,
     products,
   };
-  console.log(contact); // vérification !!
-  console.log(products); // vérification !!
+  // console.log(contact); // vérification !!
+  // console.log(products); // vérification !!
   function postOrder() {
     const optionPost = {
       method: "POST",
@@ -197,7 +195,6 @@ function envoiAuClick() {
         return res.json();
       })
       .then(function (data) {
-        // orderID.push(data.orderId);
         let orderid = data;
         localStorage.setItem("orderServer", orderid.orderId);
       });

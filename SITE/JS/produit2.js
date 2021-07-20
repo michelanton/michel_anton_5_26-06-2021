@@ -5,7 +5,7 @@ const IdProduit = urlSearchParams.get("id"); // recuperation de l'ID en string
 const UrlApi = "http://localhost:3000/api/teddies/";
 const urlProduit = IdProduit;
 let productsContainer = document.querySelector(".contener1");
-
+let article ;
 function getArticle() {
   // fonction pour fetch du produit selectioné
   fetch(UrlApi + urlProduit) // appel connection server  
@@ -22,7 +22,17 @@ function getArticle() {
       }
     )
     .then((resultatAPI) => {
-      let article = resultatAPI;
+    article = Objet.assign(colors,resultatAPI);
+      
+      console.log(article); ;
+    });
+     
+    console.log(article); 
+   
+    console.log(article); 
+  };
+   
+  getArticle();
       console.log(article);     // vérification !!
       for (const property in article) { //ittere les prorpietés
         // console.log(`${property}: ${article[property]}`);   // vérification !!
@@ -130,6 +140,4 @@ function getArticle() {
           popupConfirmationPanier();
         }
       });
-    });
-}
-getArticle();
+
